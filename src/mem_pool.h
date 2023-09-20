@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include <vector>
+#include <iostream>
 
 typedef char int8;
 typedef short int16;
@@ -22,13 +23,14 @@ typedef unsigned long long u64;
 /**
  * @brief WARNING: this class is not thread safe
  */
-struct memPool
+class memPool
 {
     u64 curr_size;
     byte* stack_ptr;
     std::vector<byte*> initptr;
     u64 block_size;
 
+public:
     /**
      * @brief WARNING: this class is not thread safe
      * @param size size of each block in memPool in bytes, pool will automatically expand by this size if full
@@ -54,7 +56,8 @@ struct memPool
     void* memloc(u64 size)
     {
         curr_size += size;
-        if (curr_size > block_size)
+        block_size = size > block_size ? size : block_size;
+        if (curr_size >= block_size)
         {
             byte* tmp = (byte*)malloc(block_size);
             initptr.push_back(tmp);
