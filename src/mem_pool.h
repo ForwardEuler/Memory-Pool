@@ -7,7 +7,6 @@
 
 #include <cstdlib>
 #include <vector>
-#include <iostream>
 
 typedef char int8;
 typedef short int16;
